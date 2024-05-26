@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->unsignedBigInteger('user_id')->comment('Created By User');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('category_id')->nullable()->comment('Category ID');
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->timestamps();
         });
     }

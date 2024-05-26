@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 
 // Route for register and login
 Route::post('register',[AuthController::class, 'register']);
@@ -13,6 +14,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post('refreshtoken', [AuthController::class, 'refreshToken']);
     Route::post('logout',[AuthController::class, 'logout']);
     Route::resource('products', ProductController::class);
+    Route::resource('categories', CategoryController::class);
 });
 
 // Route::get('/user', function (Request $request) {

@@ -303,6 +303,7 @@ class AuthController extends Controller
      *     tags={"Auth"},
      *     summary="Refresh Token",
      *     operationId="RefreshToken",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=401,
      *         description="Unauthorized",
@@ -374,6 +375,7 @@ class AuthController extends Controller
      *     tags={"Auth"},
      *     summary="Logout",
      *     operationId="Logout",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=401,
      *         description="Unauthorized",

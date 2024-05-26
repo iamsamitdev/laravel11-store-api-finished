@@ -15,7 +15,8 @@ class Product extends Model
         'description',
         'price',
         'image',
-        'user_id'
+        'user_id',
+        'category_id'
     ];
 
     /**
@@ -29,5 +30,18 @@ class Product extends Model
         // ON products.user_id = users.id;
 
         return $this->belongsTo('App\Models\User','user_id')->select(['id','fullname','avatar']); 
+    }
+
+    /**
+     * Relationship to Categories
+     */
+    public function categories(){
+
+        // SELECT * 
+        // FROM products
+        // INNER JOIN categories
+        // ON products.category_id = categories.id;
+
+        return $this->belongsTo('App\Models\Category','category_id')->select(['id','name','status']);
     }
 }

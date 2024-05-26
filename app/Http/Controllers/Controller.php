@@ -11,18 +11,16 @@ namespace App\Http\Controllers;
  *          }
  *      },
  *      title="Laravel 11 Store API",
- *      description="By L5 Swagger OpenApi description",
- *      @OA\Contact(
- *          email="samit@email.com"
- *      ),
- *     @OA\License(
- *         name="Apache 2.0",
- *         url="https://www.apache.org/licenses/LICENSE-2.0.html"
- *     )
+ *      description="",
  * )
  *  @OA\Server(
  *     description="Laravel 11 Store API",
  *     url="http://localhost:8000"
+ * )
+ * @OA\SecurityScheme(
+ *     securityScheme="bearerAuth",
+ *     type="http",
+ *     scheme="bearer"
  * )
  */
 abstract class Controller

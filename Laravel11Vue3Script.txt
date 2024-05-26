@@ -909,8 +909,9 @@ Body:
 {
     "name": "iPhone 12 Pro Max",
     "slug": "iphone-12-pro-max",
-    "description": "iPhone 12 Pro Max detail",
-    "price": "38500.00"
+    "price": "38500.00",
+    "category_id": "1",
+    "description": "iPhone 12 Pro Max detail"
 }
 
 ผลลัพธ์ที่ควรได้กลับมา

@@ -2,14 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Laravel 11 Store API",
-        "description": "By L5 Swagger OpenApi description",
-        "contact": {
-            "email": "samit@email.com"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
-        },
+        "description": "",
         "version": "1.0.0",
         "x-logo": {
             "url": "https://via.placeholder.com/190x90.png?text=L5-Swagger"
@@ -227,7 +220,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/logout": {
@@ -298,66 +296,75 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/api/products": {
+        "/api/categories": {
             "get": {
                 "tags": [
-                    "Products"
+                    "Categories"
                 ],
-                "summary": "Get all products",
-                "operationId": "1bfaa78d1c2c3848ab8165c5dadcad3e",
+                "summary": "Get all categories",
+                "operationId": "getCategories",
                 "responses": {
-                    "200": {
-                        "description": "List all products"
-                    },
                     "401": {
-                        "description": "Unauthenticated"
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "List all categories"
+                    },
+                    "500": {
+                        "description": "Internal server error"
                     }
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "bearerAuth": []
                     }
                 ]
             },
             "post": {
                 "tags": [
-                    "Products"
+                    "Categories"
                 ],
-                "summary": "Create a new product",
-                "operationId": "e8185e307706e2cd84bbcf5171e2f09d",
+                "summary": "Create a new category",
+                "operationId": "createCategory",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "name",
-                                    "slug",
-                                    "price"
+                                    "name"
                                 ],
                                 "properties": {
                                     "name": {
-                                        "description": "Name of product",
+                                        "description": "Name of category",
                                         "type": "string",
-                                        "example": "Product 1"
+                                        "example": "Category 1"
                                     },
-                                    "slug": {
-                                        "description": "Slug of product",
+                                    "status": {
+                                        "description": "Status of category",
                                         "type": "string",
-                                        "example": "product-1"
-                                    },
-                                    "price": {
-                                        "description": "Price of product",
-                                        "type": "number",
-                                        "example": "100.00"
-                                    },
-                                    "description": {
-                                        "description": "Description of product",
-                                        "type": "string",
-                                        "example": "Description of product"
+                                        "example": "true"
                                     }
                                 },
                                 "type": "object"
@@ -367,31 +374,62 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Product created successfully"
+                        "description": "Category created successfully"
                     },
                     "401": {
                         "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Permission denied to create"
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "field_name": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The field_name field is required."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "bearerAuth": []
                     }
                 ]
             }
         },
-        "/api/products/{id}": {
+        "/api/categories/{id}": {
             "get": {
                 "tags": [
-                    "Products"
+                    "Categories"
                 ],
-                "summary": "Get product by id",
-                "operationId": "7ab21ddb713501f3d4c2914892c02a21",
+                "summary": "Get categories by id",
+                "operationId": "getCategoryById",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID of product",
+                        "description": "ID of category",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -401,29 +439,29 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Product found"
+                        "description": "Category found"
                     },
                     "404": {
-                        "description": "Product not found"
+                        "description": "Category not found"
                     }
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "bearerAuth": []
                     }
                 ]
             },
             "put": {
                 "tags": [
-                    "Products"
+                    "Categories"
                 ],
-                "summary": "Update product by id",
-                "operationId": "6a7e11900844cd85cff66e662b82bd4c",
+                "summary": "Update categories by id",
+                "operationId": "updateCategoryById",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID of product",
+                        "description": "ID of category",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -437,30 +475,18 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "name",
-                                    "slug",
-                                    "price"
+                                    "name"
                                 ],
                                 "properties": {
                                     "name": {
-                                        "description": "Name of product",
+                                        "description": "Name of category",
                                         "type": "string",
-                                        "example": "Product 1"
+                                        "example": "Category 1"
                                     },
-                                    "slug": {
-                                        "description": "Slug of product",
+                                    "status": {
+                                        "description": "Status of category",
                                         "type": "string",
-                                        "example": "product-1"
-                                    },
-                                    "price": {
-                                        "description": "Price of product",
-                                        "type": "number",
-                                        "example": "100.00"
-                                    },
-                                    "description": {
-                                        "description": "Description of product",
-                                        "type": "string",
-                                        "example": "Description of product"
+                                        "example": "true"
                                     }
                                 },
                                 "type": "object"
@@ -478,7 +504,481 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Delete categories by id",
+                "operationId": "deleteCategoryById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of category",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Category deleted successfully"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get all products",
+                "operationId": "getProducts",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Number of products per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 100
+                        }
+                    },
+                    {
+                        "name": "searchQuery",
+                        "in": "query",
+                        "description": "Search query for product name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "selectedCategory",
+                        "in": "query",
+                        "description": "Filter products by category",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "List all products",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "Total": {
+                                            "type": "integer"
+                                        },
+                                        "Products": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "slug": {
+                                                        "type": "string"
+                                                    },
+                                                    "description": {
+                                                        "type": "string"
+                                                    },
+                                                    "price": {
+                                                        "type": "number"
+                                                    },
+                                                    "image": {
+                                                        "type": "string"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "category_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "category_name": {
+                                                        "type": "string"
+                                                    },
+                                                    "user_fullname": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Create a new product",
+                "operationId": "createProduct",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "slug",
+                                    "price",
+                                    "category_id"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Name of product",
+                                        "type": "string",
+                                        "example": "Product 1"
+                                    },
+                                    "slug": {
+                                        "description": "Slug of product",
+                                        "type": "string",
+                                        "example": "product-1"
+                                    },
+                                    "price": {
+                                        "description": "Price of product",
+                                        "type": "number",
+                                        "example": "100.00"
+                                    },
+                                    "category_id": {
+                                        "description": "Category ID of product",
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "description": {
+                                        "description": "Description of product",
+                                        "type": "string",
+                                        "example": "Description of product"
+                                    },
+                                    "image": {
+                                        "description": "Image of the product",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "description": "Product created successfully"
+                    },
+                    "403": {
+                        "description": "Permission denied to create"
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "field_name": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The field_name field is required."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/products/{id}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get product by id",
+                "operationId": "getProductById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of product",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Product found"
+                    },
+                    "404": {
+                        "description": "Product not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Update product by id",
+                "operationId": "updateProduct",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of product",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "_method",
+                                    "name",
+                                    "slug",
+                                    "price",
+                                    "category_id"
+                                ],
+                                "properties": {
+                                    "_method": {
+                                        "description": "HTTP method override",
+                                        "type": "string",
+                                        "example": "PUT"
+                                    },
+                                    "name": {
+                                        "description": "Name of product",
+                                        "type": "string",
+                                        "example": "Product 1"
+                                    },
+                                    "slug": {
+                                        "description": "Slug of product",
+                                        "type": "string",
+                                        "example": "product-1"
+                                    },
+                                    "price": {
+                                        "description": "Price of product",
+                                        "type": "number",
+                                        "example": "100.00"
+                                    },
+                                    "category_id": {
+                                        "description": "Category ID",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "description": {
+                                        "description": "Description of product",
+                                        "type": "string",
+                                        "example": "Description of product"
+                                    },
+                                    "image": {
+                                        "description": "Image of the product",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Product updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Product updated successfully"
+                                        },
+                                        "product": {
+                                            "$ref": "#/components/schemas/Product"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "field_name": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The field_name field is required."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
                     }
                 ]
             },
@@ -487,7 +987,7 @@
                     "Products"
                 ],
                 "summary": "Delete product by id",
-                "operationId": "e80a6ca46716acee6b47ea1ac91663c0",
+                "operationId": "deleteProduct",
                 "parameters": [
                     {
                         "name": "id",
@@ -510,7 +1010,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "bearerAuth": []
                     }
                 ]
             }
@@ -567,14 +1067,42 @@
                 },
                 "type": "object"
             },
+            "Category": {
+                "title": "Category",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "The category ID",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Category Name"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "true"
+                    }
+                },
+                "type": "object"
+            },
             "Product": {
                 "title": "Product",
                 "required": [
                     "name",
                     "slug",
-                    "price"
+                    "price",
+                    "category_id"
                 ],
                 "properties": {
+                    "id": {
+                        "description": "The unique identifier for a product",
+                        "type": "integer",
+                        "format": "int64"
+                    },
                     "name": {
                         "description": "Name of product",
                         "type": "string",
@@ -590,21 +1118,46 @@
                         "type": "number",
                         "example": "100.00"
                     },
+                    "category_id": {
+                        "description": "Category ID of product",
+                        "type": "integer",
+                        "example": "1"
+                    },
                     "description": {
                         "description": "Description of product",
                         "type": "string",
                         "example": "Description of product"
+                    },
+                    "user_id": {
+                        "description": "User ID of product",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "image": {
+                        "description": "Image of product",
+                        "type": "string",
+                        "example": "product.jpg"
                     }
                 },
                 "type": "object"
             }
         },
+        "headers": {
+            "Accept": {
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "default": "application/json",
+                    "enum": [
+                        "application/json"
+                    ]
+                }
+            }
+        },
         "securitySchemes": {
-            "bearer_token": {
-                "type": "apiKey",
-                "description": "Sanctum security laravel",
-                "name": "Authorization",
-                "in": "header"
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
             }
         }
     }
