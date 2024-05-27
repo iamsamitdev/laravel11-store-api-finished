@@ -1079,245 +1079,78 @@ Example annotations
 * )
 */
 
+Step 23: ทดสอบเรียกใช้ Document API (Swagger)
+---
+http://localhost:8000/api/documentation
+
+Step 24: Clone Project from Github
+---
+💻 git clone xxx
+
+Step 25: ติดตั้ง Composer
+---
+💻 composer install
+
+Step 26: สร้าง .env จาก .env.example
+---
+💻 cp .env.example .env
+
+Step 27: สร้าง Key สำหรับ Laravel
+---
+💻 php artisan key:generate
+
+Step 28: ทำการ Migrate ฐานข้อมูล
+---
+💻 php artisan migrate
+
+Step 29: ทำการ Seed ข้อมูล
+---
+💻 php artisan db:seed
+
+Step 30: ทดสอบรันโปรเจ็กต์
+---
+💻 php artisan serve
+
 🚀 4.Deploy Laravel Project to cloud
 
-Laravel 11 Vue 3 with Docker Script
-———————————————————————————
-Step 1: กำหนดโครงสร้างโปรเจ็กต์ดังนี้
-----
-Laravel11
-├── mysql
-│   └── data
-├── nginx
-│   └── conf
-│       └── app.conf
-├── php
-│   └── Dockerfile
-├── src
-│   ├── app
-│   │   ├── Console
-│   │   │   └── Kernel.php
-│   │   ├── Exceptions
-│   │   │   └── Handler.php
-│   │   ├── Http
-│   │   │   ├── Controllers
-│   │   │   │   ├── Auth
-│   │   │   │   ├── Controller.php
-│   │   │   │   └── HomeController.php
-│   │   │   ├── Kernel.php
-│   │   │   └── Middleware
-│   │   ├── Providers
-│   │   └── Models
-│   │       └── User.php
-│   ├── bootstrap
-│   │   ├── app.php
-│   ├── config
-│   │   ├── app.php
-│   ├── database
-│   │   ├── factories
-│   │   ├── migrations
-│   │   └── seeds
-│   ├── public
-│   │   ├── .htaccess
-│   │   ├── favicon.ico
-│   │   ├── index.php
-│   │   └── robots.txt
-│   ├── resources
-│   ├── routes
-│   │   ├── api.php
-│   │   ├── channels.php
-│   │   ├── console.php
-│   │   ├── web.php
-│   ├── storage
-│   │   ├── app
-│   │   ├── framework
-│   │   ├── logs
-│   ├── tests
-│   ├── vendor
-│   ├── .editorconfig
-│   ├── .env
-│   ├── .env.example
-│   ├── .gitattributes
-│   ├── .gitignore
-│   ├── artisan
-│   ├── composer.json
-│   ├── composer.lock
-│   ├── package.json
-│   ├── phpunit.xml
-│   ├── server.php
-│   └── webpack.mix.js
-├── .gitignore
-├── docker-compose.yaml
-└── readme.md
-
-Step 2:  Clone ตัว Laravel 11 มาใส่ใน src
+Step 31: ติดตั้ง vercel cli
 ---
-git clone https://github.com/laravel/laravel.git src
+💻 npm i -g vercel@latest
 
-Step 3: กำหนด Image ใน Dockerfile
+Step 32: เช็ค vercel cli
 ---
-# โหลด Base Image PHP 8.2
-FROM php:8.2-fpm-buster
+💻 vercel --version
 
-# ติดตั้ง Exention bcmath และ pdo_mysql
-RUN docker-php-ext-install bcmath pdo_mysql
+Step 33: ล็อกอิน vercel
 
-# สั่ง update image และ ติดตั้ง git zip และ unzip pacakage
-RUN apt-get update
-RUN apt-get install -y git zip unzip
-
-# ติดตั้ง NodeJS
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - 
-RUN apt-get install -y nodejs
-
-# Copy file composer:latest ไว้ที่ /usr/bin/composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Set working directory
-WORKDIR /var/www
-
-EXPOSE 9000
-
-หากต้องการรู้ว่าภายใน php:8.2-fpm-buster มี module อะไรอยู่บ้าง
---
-docker run php:8.2-fpm-buster php -m
-
-
-Step 4: กำหนดส่วนของ nginx setting
+แก้ไฟล์ l5-swagger.php
 ---
-server {
-    listen 80;
-    index index.php index.html;
-    error_log /var/log/nginx/error.log;
-    access_log /var/log/nginx/access.log;
-    root /var/www/public;
-    location ~ \.php$ {
-        try_files $uri =404;
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        fastcgi_pass app:9000;
-        fastcgi_index index.php;
-        include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_param PATH_INFO $fastcgi_path_info;
+'use_absolute_path' => env('L5_SWAGGER_USE_ABSOLUTE_PATH', false),
+
+แก้ไฟล์ AppServiceProvider.php
+---
+use Illuminate\Support\Facades\URL;
+public function boot(): void
+    {
+        if($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
     }
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-        gzip_static on;
-    }
-}
 
-Step 5: กำหนดส่วนของ docker-compose.yaml
+แก้ไขไฟล์ .htaccess
 ---
-version: '3.9'
+# Send Requests To API Front Controller...
+    RewriteRule ^api/.*$ /api/index.php [L]
 
-# Network for Laravel 11
-networks:
-  web_network:
-    name: laravel11
-    driver: bridge
+-------------------------------------------------------
+⚡ DAY 3
+1.What new in Vue 3
+2.Setup Vue 3 Project
+3.Vue 3 Composition API
+4.Consuming REST API in Vue 3
 
-services:
+-------------------------------------------------------
+🚀 1.What new in Vue 3
 
-  # MySQL Database Service
-  db:
-    image: mysql:8.0
-    container_name: laravel11_mysql
-    volumes:
-      - ./mysql/data:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=1234
-      - MYSQL_DATABASE=laravel11db
-      - MYSQL_USER=admin
-      - MYSQL_PASSWORD=1234
-    ports:
-      - "3336:3306"
-    restart: always
-    networks:
-      - web_network
-
-  # PHP App Service 
-  app:
-    depends_on:
-      - db
-    build: ./php
-    image: laravel11-app
-    container_name: laravel11_app
-    restart: always
-    volumes:
-      - ./src:/var/www
-    networks:
-      - web_network
-
-  # Nginx Web Server Service
-  nginx:
-    depends_on:
-      - app
-    image: nginx:1.19.8-alpine
-    container_name: laravel11_nginx
-    volumes:
-      - ./src:/var/www
-      - ./nginx/conf:/etc/nginx/conf.d
-    ports:
-      - "8088:80"
-    restart: always
-    networks:
-      - web_network
-
-  # phpMyAdmin (MySQL managment)
-  phpmyadmin:
-    image: phpmyadmin:5.1.0-apache
-    depends_on:
-      - db
-    container_name: laravel11_phpmyadmin
-    environment:
-      PMA_HOST: db
-      PMA_PORT: 3306
-      PMA_ARBITRARY: 1
-    ports:
-      - "8200:80"
-    restart: always
-    networks:
-      - web_network
-
-เช็คความเรียบร้อยของ docker-compose
----
-docker-compose config -q
-
-Step 6: สั่ง docker-compose up -d
----
-docker-compose up -d
-
-ลองเช็คสถานะด้วยคำสั่ง
----
-docker-compose ps
-
-Step 7:  เรียกเข้าไปติดตั้ง library ของ laravel ใน service "app"
----
-docker-compose exec app composer install
-
-Step 8: เพิมไฟล์ .env โดยคัดลอกโค้ดทั้งหมดจาก .env.example มาใส่
-
-Step 9: ทำการ Generate ตัว APP_KEY
---
-docker-compose exec app php artisan key:generate
-
-Step 10: Config Database ที่ไฟล์ .env
----
-DB_HOST=db
-DB_PORT=3306
-DB_DATABASE=laravel11db
-DB_USERNAME=admin
-DB_PASSWORD=1234
-
-Step 11: ทำการ Run Migration (สร้างฐานและตารางให้อัตโมัติ)
----
-เบื้องต้นให้ใช้คำสั่ง clear config ของไฟล์ .env
-docker-compose exec app php artisan config:clear
-
-คำสั่ง migrate database
----
-docker-compose exec app php artisan migrate
-
-จากนั้นก็ clear cach
----
-docker-compose exec app php artisan config:clear
+Step 1: สร้างโปรเจ็กต์ใหม่ใน Laravel 11
+💻 composer create-project  laravel/laravel laravel11-store-api

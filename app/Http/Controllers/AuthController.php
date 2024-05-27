@@ -426,6 +426,7 @@ class AuthController extends Controller
      *   )
      * )
      */
+    
     // Logout User
     public function logout(Request $request)
     {
