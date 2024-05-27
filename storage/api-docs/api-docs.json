@@ -10,7 +10,7 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8000",
+            "url": "https://laravel-store-api-51kmgvfv1-samit-koyoms-projects.vercel.app/api",
             "description": "Laravel 11 Store API"
         }
     ],
